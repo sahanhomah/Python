@@ -15,4 +15,21 @@ class bankAccount:
     def display_balance(self):
         print(f"Account Balance: {self.balance}")   
 u1=bankAccount(1,"sahan",5000)
-u1.display_balance()
+a=input("Enter D for deposit and W for withdraw and E for exit: ")
+while a!="E":
+   if a=="D":
+      amt=int(input("Enter amount to deposit: "))
+      u1.deposit(amt)
+      a=input("Enter D for deposit and W for withdraw and E for exit: ")
+   elif a=="W":
+        
+      amt=int(input("Enter amount to withdraw: "))
+      u1.withdraw(amt)
+      a=input("Enter D for deposit and W for withdraw and E for exit: ")
+   elif a=="E":
+       break
+   else:
+    print("enter valid keyword")
+    a=input("Enter D for deposit and W for withdraw and E for exit: ")
+
+print ("exited sucessfully")
