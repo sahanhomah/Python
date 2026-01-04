@@ -14,22 +14,26 @@ class bankAccount:
             print(f"Withdrew {amount}. New balance is {self.balance}.")
     def display_balance(self):
         print(f"Account Balance: {self.balance}")   
-u1=bankAccount(1,"sahan",5000)
-a=input("Enter D for deposit and W for withdraw and E for exit: ")
+account_number=int(input("Enter your account number: "))
+account_name=input("Enter your name: ")
+
+
+u1=bankAccount(account_number,account_name,5000)
+a=input(f"Hello {account_name}, enter D for deposit and W for withdraw and E for exit: ")
 while a!="E":
-   if a=="D":
+   if a.upper()=="D":
       amt=int(input("Enter amount to deposit: "))
       u1.deposit(amt)
-      a=input("Enter D for deposit and W for withdraw and E for exit: ")
-   elif a=="W":
+      a=input(f"Hello {account_name}, enter D for deposit and W for withdraw and E for exit: ")
+   elif a.upper()=="W":
         
       amt=int(input("Enter amount to withdraw: "))
       u1.withdraw(amt)
-      a=input("Enter D for deposit and W for withdraw and E for exit: ")
-   elif a=="E":
+      a=input(f"Hello {account_name}, enter D for deposit and W for withdraw and E for exit: ")
+   elif a.upper()=="E":
        break
    else:
     print("enter valid keyword")
-    a=input("Enter D for deposit and W for withdraw and E for exit: ")
+    a=input(f"Hello {account_name}, enter D for deposit and W for withdraw and E for exit: ")
 
 print ("exited sucessfully")
