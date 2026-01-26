@@ -18,8 +18,8 @@ account_number=int(input("Enter your account number: "))
 account_name=input("Enter your name: ")
 
 
-u1=bankAccount(account_number,account_name,5000)
-a=input(f"Hello {account_name}, enter D for deposit and W for withdraw and E for exit: ")
+u1=bankAccount(account_number,account_name,0)
+a=input(f"Hello {account_name}, enter D for deposit and W for withdraw S for displaying current ammount and E for exit: ")
 while a!="E":
    if a.upper()=="D":
       amt=int(input("Enter amount to deposit: "))
@@ -30,6 +30,9 @@ while a!="E":
       amt=int(input("Enter amount to withdraw: "))
       u1.withdraw(amt)
       a=input(f"Hello {account_name}, enter D for deposit and W for withdraw and E for exit: ")
+   elif a.upper()=="S":
+        u1.display_balance()
+        a=input(f"Hello {account_name}, enter D for deposit and W for withdraw and E for exit: ")
    elif a.upper()=="E":
        break
    else:
