@@ -16,6 +16,7 @@ RED = (230, 92, 92)
 BLUE = (75, 132, 255)
 
 TOLERANCE = 0.30
+MAX_TURNS_PER_PLAYER = 5
 
 
 def make_round():
@@ -48,13 +49,17 @@ def main():
 	start_button = pygame.Rect(130, 350, 200, 60)
 	stop_button = pygame.Rect(430, 350, 200, 60)
 
-	total_score = 0
-	round_number = 1
+	player_scores = [0, 0]
+	player_turns = [0, 0]
+	completed_turns = 0
+	current_player = 0
 	target = make_round()
 	running_timer = False
+	game_over = False
 	start_time = 0.0
 	elapsed = 0.0
-	result_text = "Press START to begin"
+	last_stopped_time = 0.0
+	result_text = "Player 1: Press START to begin"
 	result_color = SUBTEXT
 
 	game_running = True
@@ -66,38 +71,55 @@ def main():
 				game_running = False
 
 			if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-				if start_button.collidepoint(event.pos) and not running_timer:
-					if elapsed > 0:
-						round_number += 1
-						target = make_round()
-						elapsed = 0.0
+				if start_button.collidepoint(event.pos) and not running_timer and not game_over:
+					elapsed = 0.0
 					start_time = time.perf_counter()
 					running_timer = True
-					result_text = "Timer running... click STOP"
+					result_text = f"Player {current_player + 1}: Timer running... click STOP"
 					result_color = SUBTEXT
 
 				if stop_button.collidepoint(event.pos) and running_timer:
 					elapsed = time.perf_counter() - start_time
+					last_stopped_time = elapsed
 					running_timer = False
 
 					delta = abs(elapsed - target)
 					if delta <= TOLERANCE:
 						round_score = max(0, int((TOLERANCE - delta) * 1000))
-						total_score += round_score
-						result_text = f"Great! +{round_score} points"
+						player_scores[current_player] += round_score
+						result_text = f"Player {current_player + 1}: +{round_score} points"
 						result_color = GREEN
 					else:
-						result_text = "Missed target time"
+						result_text = f"Player {current_player + 1}: Missed target time"
 						result_color = RED
 
-		current_time = time.perf_counter() - start_time if running_timer else elapsed
+					completed_turns += 1
+					player_turns[current_player] += 1
+					if player_turns[0] >= MAX_TURNS_PER_PLAYER and player_turns[1] >= MAX_TURNS_PER_PLAYER:
+						game_over = True
+						if player_scores[0] > player_scores[1]:
+							result_text = "Game Over: Player 1 wins!"
+							result_color = GREEN
+						elif player_scores[1] > player_scores[0]:
+							result_text = "Game Over: Player 2 wins!"
+							result_color = GREEN
+						else:
+							result_text = "Game Over: It's a tie!"
+							result_color = BLUE
+					else:
+						current_player = 1 - current_player
+						target = make_round()
+
+		current_time = time.perf_counter() - start_time if running_timer else last_stopped_time
 
 		screen.fill(BG)
 		pygame.draw.rect(screen, PANEL, (40, 40, 680, 280), border_radius=16)
 
 		draw_text(screen, "Stop The Timer", title_font, TEXT, 250, 52)
-		draw_text(screen, f"Round: {round_number}", small_font, SUBTEXT, 70, 118)
-		draw_text(screen, f"Score: {total_score}", small_font, SUBTEXT, 570, 118)
+		draw_text(screen, f"Turn: {min(completed_turns + 1, MAX_TURNS_PER_PLAYER * 2)}/{MAX_TURNS_PER_PLAYER * 2}", small_font, SUBTEXT, 70, 118)
+		draw_text(screen, f"Current: Player {current_player + 1}", small_font, SUBTEXT, 250, 118)
+		draw_text(screen, f"P1: {player_scores[0]} ({player_turns[0]}/{MAX_TURNS_PER_PLAYER})", small_font, SUBTEXT, 470, 95)
+		draw_text(screen, f"P2: {player_scores[1]} ({player_turns[1]}/{MAX_TURNS_PER_PLAYER})", small_font, SUBTEXT, 470, 125)
 		draw_text(
 			screen,
 			f"Target: {target:.2f}s",
@@ -112,7 +134,8 @@ def main():
 			draw_text(screen, f"Timer: {current_time:.3f}s", title_font, BLUE, 240, 215)
 		draw_text(screen, result_text, small_font, result_color, 235, 285)
 
-		draw_button(screen, start_button, "START", font, GREEN)
+		start_color = SUBTEXT if game_over else GREEN
+		draw_button(screen, start_button, "START", font, start_color)
 		draw_button(screen, stop_button, "STOP", font, RED)
 
 		pygame.display.flip()
