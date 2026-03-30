@@ -1,0 +1,54 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Home Page
+{% endblock %}
+
+{% block content %}
+<section style="display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); align-items: center;">
+	<div>
+		<h1>Neymar Jr Introduction</h1>
+		<p class="muted">
+			Neymar da Silva Santos Junior is one of football's most exciting players, known for creative dribbling,
+			quick movement, and match-winning moments for club and country.
+		</p>
+		<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+			<a href="{% url 'stats' %}" style="display: inline-block; text-decoration: none; background: #1e88e5; color: #ffffff; padding: 10px 16px; border-radius: 8px; font-weight: 700;">View Neymar Stats</a>
+			<a href="{% url 'gallery' %}" style="display: inline-block; text-decoration: none; background: #ffffff; color: #1669b2; border: 1px solid #b9d8fb; padding: 10px 16px; border-radius: 8px; font-weight: 700;">Open Neymar Gallery</a>
+		</div>
+	</div>
+	<img
+		src="https://ichef.bbci.co.uk/ace/standard/1024/cpsprodpb/6b2a/live/88904290-d416-11f0-81ee-c91af15cf840.jpg"
+		alt="Neymar Jr"
+		style="width: 100%; border-radius: 12px; border: 1px solid #d9e2ef; box-shadow: 0 8px 20px rgba(16, 39, 68, 0.12);"
+	>
+</section>
+
+<section style="margin-top: 18px; border: 1px solid #d9e2ef; border-radius: 10px; padding: 16px; background: #fbfdff;">
+	<h2 style="margin-bottom: 8px;">Who Is Neymar?</h2>
+	<p style="margin: 0;">
+		Born in Brazil, Neymar rose to fame at Santos FC, became a global star at Barcelona, and later played key
+		years at Paris Saint-Germain. His style combines flair, speed, and confidence, making him one of the most
+		entertaining footballers of his generation.
+	</p>
+</section>
+
+<div style="display: grid; gap: 16px; margin-top: 20px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+	<article style="border: 1px solid #d9e2ef; border-radius: 10px; padding: 14px; background: #ffffff;">
+		<h3>Playing Style</h3>
+		<p class="muted">Explosive pace, close control, and creative finishing in high-pressure moments.</p>
+	</article>
+
+	<article style="border: 1px solid #d9e2ef; border-radius: 10px; padding: 14px; background: #ffffff;">
+		<h3>Career Journey</h3>
+		<p class="muted">From Santos to Barcelona and PSG, Neymar built a global football legacy.</p>
+	</article>
+
+	<article style="border: 1px solid #d9e2ef; border-radius: 10px; padding: 14px; background: #ffffff;">
+		<h3>International Impact</h3>
+		<p class="muted">A key Brazil national team figure with goals, assists, and leadership on big stages.</p>
+	</article>
+</div>
+<div><img src="{% static 'image.png' %}" alt="Neymar image"></div>
+{% endblock %}

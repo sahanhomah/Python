@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+Stats
+{% endblock %}
+
+{% block content %}
+<h1>{{ name }} Stats</h1>
+<p class="muted">The Brazilian football superstar: key numbers and major achievements.</p>
+
+<div style="margin-top: 20px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+    {% for stat in stats %}
+    <article style="border: 1px solid #d9e2ef; border-radius: 10px; padding: 14px; background: #fbfdff;">
+        <p class="muted" style="margin-bottom: 6px;">{{ stat.label }}</p>
+        <h3 style="margin: 0; color: #1669b2;">{{ stat.value }}</h3>
+    </article>
+    {% endfor %}
+</div>
+
+<section style="margin-top: 24px; border: 1px solid #d9e2ef; border-radius: 10px; padding: 16px; background: #ffffff;">
+    <h2>Achievements</h2>
+    <ul style="margin: 0; padding-left: 20px;">
+        {% for achievement in achievements %}
+        <li style="margin-bottom: 8px;">{{ achievement }}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gallery
+{% endblock %}
+
+{% block content %}
+<h1>Neymar Photo Gallery</h1>
+<p class="muted">A collection of Neymar moments from matches, celebrations, and training.</p>
+
+<style>
+	.gallery-photo {
+		cursor: zoom-in;
+	}
+
+	.photo-modal {
+		position: fixed;
+		inset: 0;
+		display: none;
+		align-items: center;
+		justify-content: center;
+		background: rgba(15, 23, 42, 0.6);
+		z-index: 999;
+		padding: 20px;
+	}
+
+	.photo-modal.open {
+		display: flex;
+	}
+
+	.photo-modal-content {
+		position: relative;
+		width: min(900px, 86vw);
+		max-height: 84vh;
+		background: #ffffff;
+		border: 1px solid #d9e2ef;
+		border-radius: 12px;
+		padding: 12px;
+		box-shadow: 0 20px 45px rgba(2, 6, 23, 0.35);
+	}
+
+	.photo-modal-image {
+		display: block;
+		width: 100%;
+		height: min(72vh, 620px);
+		object-fit: contain;
+		border-radius: 8px;
+		background: #f4f7fb;
+	}
+
+	.photo-modal-caption {
+		margin: 10px 4px 2px;
+		color: #334155;
+		font-size: 0.95rem;
+	}
+
+	.photo-modal-close {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		border: none;
+		border-radius: 8px;
+		background: #0f172a;
+		color: #ffffff;
+		padding: 6px 10px;
+		font-size: 0.95rem;
+		cursor: pointer;
+	}
+
+	.photo-nav {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		border: none;
+		border-radius: 999px;
+		width: 38px;
+		height: 38px;
+		background: rgba(15, 23, 42, 0.9);
+		color: #ffffff;
+		font-size: 1.2rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	.photo-nav-prev {
+		left: 10px;
+	}
+
+	.photo-nav-next {
+		right: 10px;
+	}
+</style>
+
+<div style="display: grid; gap: 14px; margin-top: 18px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+	<figure style="margin: 0; border: 1px solid #d9e2ef; border-radius: 10px; overflow: hidden; background: #ffffff;">
+		<img class="gallery-photo" src="https://ichef.bbci.co.uk/ace/standard/1024/cpsprodpb/6b2a/live/88904290-d416-11f0-81ee-c91af15cf840.jpg" alt="Neymar in match action" data-caption="Match action and attacking play" style="display: block; width: 100%; height: 180px; object-fit: cover;">
+		<figcaption style="padding: 10px 12px; font-size: 0.95rem;">Match action and attacking play</figcaption>
+	</figure>
+
+	<figure style="margin: 0; border: 1px solid #d9e2ef; border-radius: 10px; overflow: hidden; background: #ffffff;">
+		<img class="gallery-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Neymar.jpg" alt="Neymar at a press conference" data-caption="Neymar with Brazil national team" style="display: block; width: 100%; height: 180px; object-fit: cover;">
+		<figcaption style="padding: 10px 12px; font-size: 0.95rem;">Neymar with Brazil national team</figcaption>
+	</figure>
+
+	<figure style="margin: 0; border: 1px solid #d9e2ef; border-radius: 10px; overflow: hidden; background: #ffffff;">
+		<img class="gallery-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Neymar_2018_(cropped).jpg" alt="Neymar during warm-up" data-caption="Champions League warm-up moment" style="display: block; width: 100%; height: 180px; object-fit: cover;">
+		<figcaption style="padding: 10px 12px; font-size: 0.95rem;">Champions League warm-up moment</figcaption>
+	</figure>
+
+	<figure style="margin: 0; border: 1px solid #d9e2ef; border-radius: 10px; overflow: hidden; background: #ffffff;">
+		<img class="gallery-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Neymar_vs_Lille_(cropped).jpg" alt="Neymar before a penalty" data-caption="Neymar in PSG match action" style="display: block; width: 100%; height: 180px; object-fit: cover;">
+		<figcaption style="padding: 10px 12px; font-size: 0.95rem;">Neymar in PSG match action</figcaption>
+	</figure>
+
+	<figure style="margin: 0; border: 1px solid #d9e2ef; border-radius: 10px; overflow: hidden; background: #ffffff;">
+		<img class="gallery-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Neymar_Jr_Presentation_(cropped).jpg" alt="Neymar PSG presentation" data-caption="PSG presentation day" style="display: block; width: 100%; height: 180px; object-fit: cover;">
+		<figcaption style="padding: 10px 12px; font-size: 0.95rem;">PSG presentation day</figcaption>
+	</figure>
+
+	<figure style="margin: 0; border: 1px solid #d9e2ef; border-radius: 10px; overflow: hidden; background: #ffffff;">
+		<img class="gallery-photo" src="https://commons.wikimedia.org/wiki/Special:FilePath/Neymar_Jr_presentation_-_Press_conference_for_PSG_001_(cropped).jpg" alt="Neymar press conference" data-caption="Neymar media and press moment" style="display: block; width: 100%; height: 180px; object-fit: cover;">
+		<figcaption style="padding: 10px 12px; font-size: 0.95rem;">Neymar media and press moment</figcaption>
+	</figure>
+</div>
+
+<div id="photoModal" class="photo-modal" aria-hidden="true">
+	<div class="photo-modal-content" role="dialog" aria-modal="true" aria-label="Photo preview">
+		<button id="photoModalPrev" class="photo-nav photo-nav-prev" type="button" aria-label="Previous photo">&#8249;</button>
+		<button id="photoModalNext" class="photo-nav photo-nav-next" type="button" aria-label="Next photo">&#8250;</button>
+		<button id="photoModalClose" class="photo-modal-close" type="button">Close</button>
+		<img id="photoModalImage" class="photo-modal-image" src="" alt="Large preview">
+		<p id="photoModalCaption" class="photo-modal-caption"></p>
+	</div>
+</div>
+
+<script>
+	(function () {
+		const modal = document.getElementById("photoModal");
+		const modalImage = document.getElementById("photoModalImage");
+		const modalCaption = document.getElementById("photoModalCaption");
+		const closeBtn = document.getElementById("photoModalClose");
+		const prevBtn = document.getElementById("photoModalPrev");
+		const nextBtn = document.getElementById("photoModalNext");
+		const photos = document.querySelectorAll(".gallery-photo");
+		let currentIndex = 0;
+
+		function showPhoto(index) {
+			const photo = photos[index];
+			if (!photo) {
+				return;
+			}
+			modalImage.src = photo.src;
+			modalImage.alt = photo.alt || "Photo preview";
+			modalCaption.textContent = photo.dataset.caption || "";
+		}
+
+		function openModal(index) {
+			currentIndex = index;
+			showPhoto(currentIndex);
+			modal.classList.add("open");
+			modal.setAttribute("aria-hidden", "false");
+		}
+
+		function nextPhoto() {
+			currentIndex = (currentIndex + 1) % photos.length;
+			showPhoto(currentIndex);
+		}
+
+		function prevPhoto() {
+			currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+			showPhoto(currentIndex);
+		}
+
+		function closeModal() {
+			modal.classList.remove("open");
+			modal.setAttribute("aria-hidden", "true");
+			modalImage.src = "";
+		}
+
+		photos.forEach(function (photo, index) {
+			photo.addEventListener("click", function () {
+				openModal(index);
+			});
+		});
+
+		closeBtn.addEventListener("click", closeModal);
+		nextBtn.addEventListener("click", nextPhoto);
+		prevBtn.addEventListener("click", prevPhoto);
+		modal.addEventListener("click", function (event) {
+			if (event.target === modal) {
+				closeModal();
+			}
+		});
+
+		document.addEventListener("keydown", function (event) {
+			if (!modal.classList.contains("open")) {
+				return;
+			}
+
+			if (event.key === "Escape") {
+				closeModal();
+			}
+
+			if (event.key === "ArrowRight") {
+				nextPhoto();
+			}
+
+			if (event.key === "ArrowLeft") {
+				prevPhoto();
+			}
+		});
+	})();
+</script>
+{% endblock %}
