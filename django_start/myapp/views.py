@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.timezone import localdate
 
 from myapp.models import Task
   
@@ -61,6 +62,7 @@ def task_list(request):
 
     context = {
         "tasks": tasks,
+        "today": localdate(),
         "status_filter": status_filter,
         "status_options": [
             ("all", "All"),
@@ -111,3 +113,14 @@ def task_delete(request, task_id):
     if request.method == "POST":
         task.delete()
     return redirect("task_list")
+
+
+def task_complete(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == "POST":
+        task.status = Task.DONE
+        task.save(update_fields=["status", "updated_at"])
+    return redirect("task_list")
+
+def admin(request):
+    return redirect("/admin/")

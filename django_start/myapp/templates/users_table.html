@@ -74,6 +74,12 @@
     .status-pill.todo { background: #eef3ff; color: #3f51b5; }
     .status-pill.in_progress { background: #fff6e8; color: #af6a00; }
     .status-pill.done { background: #e8f8ee; color: #1b8f4a; }
+    .status-pill.overdue { background: #ffe4e6; color: #b91c1c; }
+
+    .due-date-overdue {
+        color: #b91c1c;
+        font-weight: 700;
+    }
 
     .priority-pill.low { background: #eaf8ff; color: #0277bd; }
     .priority-pill.medium { background: #fff7d6; color: #8b6a00; }
@@ -100,8 +106,13 @@
         color: #fff;
     }
 
-    .task-row-actions button {
+    .task-row-actions .delete-btn {
         background: #d9534f;
+        color: #fff;
+    }
+
+    .task-row-actions .complete-btn {
+        background: #1b8f4a;
         color: #fff;
     }
 
@@ -151,9 +162,19 @@
                 <td><strong>{{ task.title }}</strong></td>
                 <td>{{ task.description|default:"-" }}</td>
                 <td>{{ task.work_update|default:"-" }}</td>
-                <td>{% if task.due_date %}{{ task.due_date }}{% else %}-{% endif %}</td>
+                <td class="{% if task.due_date and task.due_date < today and task.status != 'done' %}due-date-overdue{% endif %}">
+                    {% if task.due_date %}
+                        {{ task.due_date }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
                 <td>
-                    <span class="status-pill {{ task.status }}">{{ task.get_status_display }}</span>
+                    {% if task.due_date and task.due_date < today and task.status != 'done' %}
+                        <span class="status-pill overdue">Failed</span>
+                    {% else %}
+                        <span class="status-pill {{ task.status }}">{{ task.get_status_display }}</span>
+                    {% endif %}
                 </td>
                 <td>
                     <span class="priority-pill {{ task.priority }}">{{ task.get_priority_display }}</span>
@@ -161,9 +182,15 @@
                 <td>
                     <div class="task-row-actions">
                         <a href="{% url 'task_update' task.id %}">Edit</a>
+                        {% if task.status != 'done' %}
+                        <form method="post" action="{% url 'task_complete' task.id %}" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="complete-btn">Complete</button>
+                        </form>
+                        {% endif %}
                         <form method="post" action="{% url 'task_delete' task.id %}" style="margin: 0;">
                             {% csrf_token %}
-                            <button type="submit" onclick="return confirm('Delete this task?');">Delete</button>
+                            <button type="submit" class="delete-btn" onclick="return confirm('Delete this task?');">Delete</button>
                         </form>
                     </div>
                 </td>
