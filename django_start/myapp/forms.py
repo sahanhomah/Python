@@ -11,13 +11,10 @@ class userForm(forms.Form):
 class UserModelForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["name", "email", "password", "address", "contact"]
+        fields = ["username", "password"]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control"}),
-            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "username": forms.TextInput(attrs={"class": "form-control"}),
             "password": forms.TextInput(attrs={"class": "form-control"}),
-            "address": forms.TextInput(attrs={"class": "form-control"}),
-            "contact": forms.TextInput(attrs={"class": "form-control"}),
         }
 
 
