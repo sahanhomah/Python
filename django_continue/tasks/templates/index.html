@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<section class="panel">
+	<h1 class="title">Task Manager</h1>
+	<p class="subtitle">Keep a simple running list of things you want to get done.</p>
+	<div class="actions">
+		<a class="btn" href="{% url 'addtask' %}">Add Task</a>
+		<a class="btn btn-secondary" href="{% url 'listtasks' %}">View Tasks</a>
+	</div>
+</section>
+
+{% endblock %}

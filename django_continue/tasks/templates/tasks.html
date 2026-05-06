@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="panel">
+	<h1 class="title">Your tasks</h1>
+	<p class="subtitle">A quick view of everything currently on the list.</p>
+	<span class="task-count">{{ tasks|length }} items</span>
+	<ul class="task-list">
+		{% for task in tasks %}
+			<li class="task-item">
+				<p class="task-text">{{ task }}</p>
+				<form class="task-delete-form" method="POST" action="{% url 'deletetask' task.id %}">
+					{% csrf_token %}
+					<button class="delete-btn" type="submit">X</button>
+				</form>
+			</li>
+		{% endfor %}
+	</ul>
+	<div class="actions">
+		<a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
+		<a class="btn" href="{% url 'addtask' %}">Add Task</a>
+	</div>
+</section>
+{% endblock %}

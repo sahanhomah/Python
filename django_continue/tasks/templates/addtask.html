@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<section class="panel">
+    <h1 class="title">Add a task</h1>
+    <p class="subtitle">Capture the next thing you want to do.</p>
+    <form  action ="{% url 'addtask' %}" method="POST">
+        {% csrf_token %}
+        <input class="task-input" type="text" name="task" placeholder="Type a new task">
+        <input class="btn" type="submit" value="Add Task">
+    </form>
+    <div class="actions">
+        <a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
+        <a class="btn btn-secondary" href="{% url 'listtasks' %}">View Tasks</a>
+    </div>
+</section>
+{% endblock %}
