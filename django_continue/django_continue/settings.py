@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'cbv',
     'sunday',
     'tasks',
+    'signals',
 ]
 
 MIDDLEWARE = [

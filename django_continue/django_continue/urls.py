@@ -22,4 +22,5 @@ urlpatterns = [
     path('cbv/', include('cbv.urls')),
     path('check/',include('sunday.urls')),
     path('', include('tasks.urls')),
+    path('signals/', include('signals.urls')),
 ]
