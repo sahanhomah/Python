@@ -1,5 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+
+
 
 # Create your views here.
 def task(request):
@@ -22,3 +27,5 @@ def delete_task(request, task_id):
 
 def home(request):
     return render(request, "index.html")
+
+
