@@ -66,7 +66,7 @@ TEMPLATES = [
         },
     },
 ]
-
+AUTH_USER_MODEL = 'blog.CustomUser'
 WSGI_APPLICATION = 'mailproject.wsgi.application'
 
 
