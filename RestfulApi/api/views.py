@@ -10,6 +10,9 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from employees.models import Employee
 from rest_framework import mixins, generics, viewsets
+from .pagination import CustomPagination
+from employees.filters import EmployeeFilter
+
 # Create your views here.
 
 
@@ -160,7 +163,8 @@ class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
     lookup_field = 'pk'
-
+    pagination_class = CustomPagination
+    filterset_class = EmployeeFilter
 class BlogView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
