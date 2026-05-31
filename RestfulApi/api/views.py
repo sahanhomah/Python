@@ -12,7 +12,7 @@ from employees.models import Employee
 from rest_framework import mixins, generics, viewsets
 from .pagination import CustomPagination
 from employees.filters import EmployeeFilter
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 # Create your views here.
 
 
@@ -168,8 +168,9 @@ class EmployeeViewset(viewsets.ModelViewSet):
 class BlogView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
-    filter_backends = [SearchFilter]
+    filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['title', 'content']
+    ordering_fields = ['title']
 
 class CommentView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
