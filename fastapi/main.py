@@ -18,7 +18,7 @@ def get_products():
 @app.get("/products/{id}")
 def get_product(id: int):
     for product in products:
-        if product["id"] == id:
+        if product[i]["id"] == id:
             return product
     
     
@@ -35,3 +35,17 @@ def update_product(id: int, product: Products):
             products[i] = product.model_dump()
             return "Product updated successfully"
     return "Product not found"
+
+@app.delete("/products/{id}")
+def delete_product(id: int):
+    for i in range(len(products)):
+        if products[i]["id"] == id:
+            del products[i]
+            return("successfully deleted")
+    return("product not found")
+
+
+       
+
+
+    
