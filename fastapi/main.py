@@ -14,3 +14,24 @@ def greet():
 @app.get("/products")
 def get_products():
     return products
+
+@app.get("/products/{id}")
+def get_product(id: int):
+    for product in products:
+        if product["id"] == id:
+            return product
+    
+    
+    return " Product not found"
+@app.post("/products")
+def create_product(product: Products):
+    products.append(product.model_dump())
+    return product
+
+@app.put("/products/{id}")
+def update_product(id: int, product: Products):
+    for i in range(len(products)):
+        if products[i]["id"] == id:
+            products[i] = product.model_dump()
+            return "Product updated successfully"
+    return "Product not found"
