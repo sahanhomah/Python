@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from models import Products
+from database import session,engine
+import database_models
 app = FastAPI()
-
+database_models.Base.metadata.create_all(bind=engine)
 
 products = [
     {"id": 1, "name": "Laptop", "price": 999.99, "description": "A high-performance laptop for work and play.", "quantity": 10},
@@ -17,6 +19,9 @@ def get_products():
 
 @app.get("/products/{id}")
 def get_product(id: int):
+
+    db=session()
+    db.query()
     for product in products:
         if product[i]["id"] == id:
             return product
